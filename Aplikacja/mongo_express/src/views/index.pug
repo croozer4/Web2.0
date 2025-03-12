@@ -1,0 +1,31 @@
+extends layout
+
+block content
+  header
+    h1 Wynalazki i Twórcy 🧪👨🔬
+    p Odkryj przełomowe wynalazki i ich genialnych twórców
+
+  .wynalazki
+    h2 Losowe Wynalazki:
+    .wynalazki-container
+      each wynalazek in wynalazki
+        .wynalazek-card
+          h3= wynalazek.nazwa
+          p.rok Rok: #{wynalazek.rok}
+          p.status Status: #{wynalazek.czy_używany ? '✅ W użyciu' : '❌ Wycofany'}
+          if wynalazek.zastosowania.length
+            p Zastosowania: 
+              each zastosowanie in wynalazek.zastosowania
+                span.tag= zastosowanie + ' '
+
+  section.tworca
+    if tworca
+      h2 Twórca Dnia:
+      .tworca-card
+        h3= `${tworca.imie} ${tworca.nazwisko}`
+        p Narodowość: #{tworca.narodowosc}
+        p Bio: 
+          em "#{tworca.bioSnippet}..."
+    else
+      h2 Brak dostępnych twórców
+      p Spróbuj dodać twórców w panelu administracyjnym

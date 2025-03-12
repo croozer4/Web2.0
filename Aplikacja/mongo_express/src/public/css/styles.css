@@ -1,0 +1,417 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  margin: 0;
+}
+
+.spacer {
+  height: 70px;
+  width: 100%;
+}
+
+.navbar {
+  width: 100%;
+  height: 70px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  border-bottom: 1px solid #e6ecf1;
+}
+
+.nav-logo {
+  color: #013567;
+  padding-left: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  height: 40px;
+}
+
+.nav-links {
+  padding-right: 20px;
+  display: flex;
+  flex-direction: row;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0 10px;
+  height: 70px;
+  line-height: 70px;
+  text-align: center;
+  transition: 0.4s;
+}
+
+.nav-links a:hover {
+  background-color: #ebf0f6;
+  transition: 0.3s;
+}
+
+.active {
+  position: relative;
+}
+
+.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #013567;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.2);
+  transition: 0.5s;
+}
+
+.content-holder {
+  padding: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.table-container {
+  max-width: 100%;
+  border-radius: 10px;
+  border: 1px solid #e6ecf1;
+  overflow: hidden;
+}
+
+.wynalazki-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wynalazki-table th,
+.wynalazki-table td {
+  border-bottom: 1px solid #e6ecf1;
+  padding: 10px 20px;
+}
+
+.wynalazki-table th {
+  background-color: #ebf0f6;
+  text-align: left;
+}
+
+.center-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-button {
+  background-color: #013567;
+  height: 40px;
+  width: 100px;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  text-align: center;
+  line-height: 40px;
+  font-size: medium;
+  border: none;
+}
+
+.buttons-holder {
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.select-button {
+  height: 42px;
+  width: 100px;
+  border-radius: 10px;
+  border: 2px solid #e6ecf1;
+}
+
+.form-align {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+/* dodawanie */
+
+.form-container {
+  display: flex;
+  width: 50%;
+}
+
+.form-wrapper {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e6ecf1;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.form-checkbox {
+  margin-left: 5px;
+}
+
+.form-button {
+  background-color: #013567;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.form-button:hover {
+  background-color: #012b4a;
+}
+
+.image-fixed {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  height: 90vh;
+  width: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-fixed img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/* wynalazek */
+
+.wynalazek-header {
+  margin-bottom: 20px;
+}
+
+.wynalazek-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.wynalazek-image {
+  width: 40%;
+}
+
+.wynalazek-info {
+  width: 55%;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.wynalazek-info p {
+  margin: 0;
+}
+
+.wynalazek-zdjecie {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* twórca */
+
+.tworca-header {
+  margin-bottom: 20px;
+}
+
+.tworca-details {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tworca-image {
+  width: 40%;
+}
+
+.tworca-info {
+  width: 55%;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tworca-info p {
+  margin: 0;
+}
+
+.tworca-zdjecie {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* czat */
+
+.wiadomosc {
+  background-color: #ebf0f6;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.wiadomosc p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.nick_wiadomosc {
+  font-weight: bold;
+}
+
+.wiadomosc_form {
+  background-color: #ebf0f6;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wiadomosc_form label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.wiadomosc_form input,
+.wiadomosc_form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.wiadomosc_form button {
+  background-color: #013567;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 100%;
+  font-weight: bold;
+}
+
+.wiadomosc_form button:hover {
+  background-color: #012b4a;
+}
+
+/* opis strony */
+
+.opis {
+  background-color: #ebf0f6;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.opis p {
+  font-size: 1.1rem;
+}
+
+/* dane kontaktowe */
+
+.informacje {
+  margin-top: 20px;
+  background-color: #ebf0f6;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.informacje h2 {
+  font-size: 1.5rem;
+}
+
+.informacje ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.informacje li {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+/* strona główna */
+
+.wynalazki-container {
+  display: flex;
+  gap: 20px;
+}
+
+.wynalazki-container div {
+  background-color: #ebf0f6;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.creator-image {
+  max-height: 400px;
+}
+
+.error-container {
+  background: #ffe6e6;
+  border: 2px solid #ff0000;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+
+.error-container ul {
+  margin: 5px 0;
+  padding-left: 20px;
+}

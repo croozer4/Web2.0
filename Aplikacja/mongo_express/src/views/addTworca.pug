@@ -1,0 +1,49 @@
+extends layout
+
+block content
+  .form-container
+    .form-wrapper
+      h1 Dodaj Twórcę
+
+      form(action="/tworcy/add" method="POST")
+        .form-group
+          label.form-label(for="imie") Imię
+          input.form-input(type="text" id="imie" name="imie" required placeholder="Wprowadź imię")
+
+        .form-group
+          label.form-label(for="nazwisko") Nazwisko
+          input.form-input(type="text" id="nazwisko" name="nazwisko" required placeholder="Wprowadź nazwisko")
+
+        .form-group
+          label.form-label(for="narodowosc") Narodowość
+          input.form-input(type="text" id="narodowosc" name="narodowosc" required placeholder="Podaj narodowość")
+
+        .form-group
+          label.form-label(for="dataUrodzenia") Data urodzenia
+          input.form-input(type="date" id="dataUrodzenia" name="dataUrodzenia" required)
+
+        .form-group
+          label.form-label(for="dataSmierci") Data śmierci (opcjonalnie)
+          input.form-input(type="date" id="dataSmierci" name="dataSmierci")
+
+        .form-group
+          label.form-label(for="zdjecie") Link do zdjęcia
+          input.form-input(type="url" id="zdjecie" name="zdjecie" required placeholder="Podaj URL zdjęcia")
+
+        .form-group
+          label.form-label(for="biografia") Biografia
+          textarea.form-input(id="biografia" name="biografia" required placeholder="Opisz twórcę")
+
+        .form-group
+          label
+            input(type="checkbox" name="nobel")
+            | Otrzymał nagrodę Nobla?
+
+        .form-group
+          label.form-label(for="inneNagrody") Inne nagrody
+          input.form-input(type="text" id="inneNagrody" name="inneNagrody" placeholder="Podaj inne nagrody, oddzielając je przecinkami")
+
+        button.form-button(type="submit") Dodaj Twórcę
+
+    .image-fixed
+      img(src="/img/undraw_nature_m5ll.svg" alt="Ilustracja twórcy")
