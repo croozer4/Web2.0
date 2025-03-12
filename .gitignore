@@ -1,0 +1,20 @@
+# Ignorowanie pliku .env
+.env
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Kompilowane pliki TypeScript
+dist/
+build/
+
+# Pliki edytorów
+.vscode/
+.idea/
+.DS_Store
+
+# Pliki systemowe
+Thumbs.db
