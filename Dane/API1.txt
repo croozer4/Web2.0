@@ -1,0 +1,5 @@
+GET	/games	Pobierz listę gier
+GET	/games/{id}	Pobierz szczegóły gry
+POST	/games	Dodaj nową grę
+PUT	/games/{id}	Aktualizuj dane gry
+DELETE	/games/{id}	Usuń grę

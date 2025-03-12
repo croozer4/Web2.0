@@ -1,0 +1,183 @@
+[
+    {
+      "title": "The Witcher 3: Wild Hunt",
+      "developer": "CD Projekt Red",
+      "release_year": 2015,
+      "platforms": ["PC", "PS4", "Xbox One", "Switch"],
+      "genre": ["RPG", "Open World"],
+      "rating": 9.8,
+      "price": 29.99
+    },
+    {
+      "title": "Cyberpunk 2077",
+      "developer": "CD Projekt Red",
+      "release_year": 2020,
+      "platforms": ["PC", "PS4", "PS5", "Xbox One", "Xbox Series X"],
+      "genre": ["RPG", "Action"],
+      "rating": 8.5,
+      "price": 39.99
+    },
+    {
+      "title": "Elden Ring",
+      "developer": "FromSoftware",
+      "release_year": 2022,
+      "platforms": ["PC", "PS4", "PS5", "Xbox One", "Xbox Series X"],
+      "genre": ["RPG", "Action", "Open World"],
+      "rating": 9.7,
+      "price": 49.99
+    },
+    {
+      "title": "Red Dead Redemption 2",
+      "developer": "Rockstar Games",
+      "release_year": 2018,
+      "platforms": ["PC", "PS4", "Xbox One"],
+      "genre": ["Action", "Open World"],
+      "rating": 9.6,
+      "price": 39.99
+    },
+    {
+      "title": "Grand Theft Auto V",
+      "developer": "Rockstar Games",
+      "release_year": 2013,
+      "platforms": ["PC", "PS3", "PS4", "PS5", "Xbox 360", "Xbox One", "Xbox Series X"],
+      "genre": ["Action", "Open World"],
+      "rating": 9.5,
+      "price": 29.99
+    },
+    {
+      "title": "God of War",
+      "developer": "Santa Monica Studio",
+      "release_year": 2018,
+      "platforms": ["PC", "PS4"],
+      "genre": ["Action", "Adventure"],
+      "rating": 9.7,
+      "price": 39.99
+    },
+    {
+      "title": "God of War: Ragnarok",
+      "developer": "Santa Monica Studio",
+      "release_year": 2022,
+      "platforms": ["PS4", "PS5"],
+      "genre": ["Action", "Adventure"],
+      "rating": 9.5,
+      "price": 59.99
+    },
+    {
+      "title": "Horizon Zero Dawn",
+      "developer": "Guerrilla Games",
+      "release_year": 2017,
+      "platforms": ["PC", "PS4"],
+      "genre": ["RPG", "Open World"],
+      "rating": 9.0,
+      "price": 29.99
+    },
+    {
+      "title": "Horizon Forbidden West",
+      "developer": "Guerrilla Games",
+      "release_year": 2022,
+      "platforms": ["PS4", "PS5"],
+      "genre": ["RPG", "Open World"],
+      "rating": 9.2,
+      "price": 59.99
+    },
+    {
+      "title": "Dark Souls III",
+      "developer": "FromSoftware",
+      "release_year": 2016,
+      "platforms": ["PC", "PS4", "Xbox One"],
+      "genre": ["RPG", "Action"],
+      "rating": 9.3,
+      "price": 29.99
+    },
+    {
+      "title": "Sekiro: Shadows Die Twice",
+      "developer": "FromSoftware",
+      "release_year": 2019,
+      "platforms": ["PC", "PS4", "Xbox One"],
+      "genre": ["Action", "Adventure"],
+      "rating": 9.4,
+      "price": 39.99
+    },
+    {
+      "title": "Bloodborne",
+      "developer": "FromSoftware",
+      "release_year": 2015,
+      "platforms": ["PS4"],
+      "genre": ["RPG", "Action"],
+      "rating": 9.5,
+      "price": 19.99
+    },
+    {
+      "title": "The Legend of Zelda: Breath of the Wild",
+      "developer": "Nintendo",
+      "release_year": 2017,
+      "platforms": ["Switch"],
+      "genre": ["RPG", "Open World"],
+      "rating": 9.8,
+      "price": 59.99
+    },
+    {
+      "title": "The Legend of Zelda: Tears of the Kingdom",
+      "developer": "Nintendo",
+      "release_year": 2023,
+      "platforms": ["Switch"],
+      "genre": ["RPG", "Open World"],
+      "rating": 9.9,
+      "price": 69.99
+    },
+    {
+      "title": "Super Mario Odyssey",
+      "developer": "Nintendo",
+      "release_year": 2017,
+      "platforms": ["Switch"],
+      "genre": ["Platformer", "Adventure"],
+      "rating": 9.6,
+      "price": 49.99
+    },
+    {
+      "title": "Resident Evil 4 Remake",
+      "developer": "Capcom",
+      "release_year": 2023,
+      "platforms": ["PC", "PS4", "PS5", "Xbox Series X"],
+      "genre": ["Horror", "Action"],
+      "rating": 9.3,
+      "price": 59.99
+    },
+    {
+      "title": "Minecraft",
+      "developer": "Mojang Studios",
+      "release_year": 2011,
+      "platforms": ["PC", "PS4", "PS5", "Xbox One", "Xbox Series X", "Switch", "Mobile"],
+      "genre": ["Sandbox", "Survival"],
+      "rating": 9.7,
+      "price": 26.99
+    },
+    {
+      "title": "Fortnite",
+      "developer": "Epic Games",
+      "release_year": 2017,
+      "platforms": ["PC", "PS4", "PS5", "Xbox One", "Xbox Series X", "Switch", "Mobile"],
+      "genre": ["Battle Royale", "Shooter"],
+      "rating": 8.5,
+      "price": 0.00
+    },
+    {
+      "title": "Call of Duty: Modern Warfare II",
+      "developer": "Infinity Ward",
+      "release_year": 2022,
+      "platforms": ["PC", "PS4", "PS5", "Xbox One", "Xbox Series X"],
+      "genre": ["Shooter", "FPS"],
+      "rating": 8.9,
+      "price": 69.99
+    },
+    {
+      "title": "Baldur's Gate 3",
+      "developer": "Larian Studios",
+      "release_year": 2023,
+      "platforms": ["PC", "PS5"],
+      "genre": ["RPG", "Turn-Based"],
+      "rating": 9.9,
+      "price": 59.99
+    }
+  ]
+  
