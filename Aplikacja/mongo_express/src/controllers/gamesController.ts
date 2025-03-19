@@ -8,14 +8,14 @@ export const getAllGames = async (req: Request, res: Response): Promise<void> =>
   const { sort, order, genre } = req.query;
   console.log("Aktualnie używana baza:", Game.db.name);
   
-  const query = genre ? { genre } : {};  // Filtrujemy po gatunku, jeśli podano
-  const sortOptions = getSortOptions(sort as string, order as string);  // Sortowanie gier
+  const query = genre ? { genre } : {};
+  const sortOptions = getSortOptions(sort as string, order as string);
   
   try {
     const games = await Game.find(query).sort(sortOptions);
     console.log("Pobrane gry:", games);
-    // res.render("games", { games });  // Renderowanie strony gier
-    res.json(games); // Zwracamy gry w formacie JSON
+    // res.render("games", { games });
+    res.json(games);
   } catch (error) {
     console.error("Błąd pobierania gier:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -26,9 +26,9 @@ export const getAllGames = async (req: Request, res: Response): Promise<void> =>
 const getSortOptions = (sort: string, order: string): Record<string, 1 | -1> => {
   const direction = order === "desc" ? -1 : 1;
   switch (sort) {
-    case "name": return { name: direction };  // Sortowanie po nazwie
-    case "genre": return { genre: direction };  // Sortowanie po gatunku
-    case "releaseDate": return { releaseDate: direction };  // Sortowanie po dacie wydania
+    case "name": return { name: direction };
+    case "genre": return { genre: direction };
+    case "releaseDate": return { releaseDate: direction };
     default: return {};
   }
 };
@@ -42,8 +42,8 @@ export const getGameById = async (req: Request, res: Response): Promise<void> =>
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    // res.render("game", { game });  // Renderowanie szczegółów gry
-    res.json(game);  // Zwracamy grę w formacie JSON
+    // res.render("game", { game });
+    res.json(game);
   } catch (error) {
     console.error("Błąd pobierania gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -63,7 +63,7 @@ export const addGame = async (req: Request, res: Response): Promise<void> => {
       price
     });
     await newGame.save();
-    res.redirect("/games");  // Przekierowanie do listy gier
+    res.redirect("/games");
   } catch (error) {
     console.error("Błąd dodawania gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -84,7 +84,7 @@ export const updateGame = async (req: Request, res: Response): Promise<void> => 
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    res.redirect(`/games/${id}`);  // Przekierowanie do strony z aktualizowaną grą
+    res.redirect(`/games/${id}`);
   } catch (error) {
     console.error("Błąd aktualizacji gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -100,7 +100,7 @@ export const deleteGame = async (req: Request, res: Response): Promise<void> => 
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    res.redirect("/games");  // Przekierowanie do listy gier
+    res.redirect("/games");
   } catch (error) {
     console.error("Błąd usuwania gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
