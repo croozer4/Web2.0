@@ -14,7 +14,8 @@ export const getAllGames = async (req: Request, res: Response): Promise<void> =>
   try {
     const games = await Game.find(query).sort(sortOptions);
     console.log("Pobrane gry:", games);
-    res.render("games", { games });  // Renderowanie strony gier
+    // res.render("games", { games });  // Renderowanie strony gier
+    res.json(games); // Zwracamy gry w formacie JSON
   } catch (error) {
     console.error("Błąd pobierania gier:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -41,7 +42,8 @@ export const getGameById = async (req: Request, res: Response): Promise<void> =>
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    res.render("game", { game });  // Renderowanie szczegółów gry
+    // res.render("game", { game });  // Renderowanie szczegółów gry
+    res.json(game);  // Zwracamy grę w formacie JSON
   } catch (error) {
     console.error("Błąd pobierania gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -50,14 +52,15 @@ export const getGameById = async (req: Request, res: Response): Promise<void> =>
 
 // POST /games – Dodaj nową grę
 export const addGame = async (req: Request, res: Response): Promise<void> => {
-  const { name, genre, platform, releaseDate, description } = req.body;
+  const { title, developer, release_year, platforms, rating, price } = req.body;
   try {
     const newGame = new Game({
-      name,
-      genre,
-      platform,
-      releaseDate,
-      description
+      title,
+      developer,
+      release_year,
+      platforms,
+      rating,
+      price
     });
     await newGame.save();
     res.redirect("/games");  // Przekierowanie do listy gier
@@ -70,11 +73,11 @@ export const addGame = async (req: Request, res: Response): Promise<void> => {
 // PUT /games/{id} – Aktualizuj dane gry
 export const updateGame = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  const { name, genre, platform, releaseDate, description } = req.body;
+  const { title, developer, release_year, platforms, rating, price } = req.body;
   try {
     const game = await Game.findByIdAndUpdate(
       id,
-      { name, genre, platform, releaseDate, description },
+      { title, developer, release_year, platforms, rating, price },
       { new: true }
     );
     if (!game) {
