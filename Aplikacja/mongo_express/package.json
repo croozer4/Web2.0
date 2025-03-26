@@ -30,7 +30,7 @@
     "redis": "^4.7.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
+    "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.7.9",
     "@types/nodemailer": "^6.4.17",
