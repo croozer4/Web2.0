@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
 import User from "../models/User"; // Importujemy model użytkownika
+import { blacklistToken } from "../middleware/authMiddleware";
 
 // Funkcja do rejestracji użytkownika
 export const registerUser = async (
@@ -139,3 +140,23 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ message: "Błąd serwera" });
   }
 };
+
+
+export const logoutUser = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      res.status(400).json({ message: "Brak tokena w żądaniu" });
+      return;
+    }
+
+    blacklistToken(token);
+    res.status(200).json({ message: "Wylogowano pomyślnie" });
+  } catch (error) {
+    res.status(500).json({ message: "Błąd serwera podczas wylogowywania" });
+  }
+};
+
+
+
