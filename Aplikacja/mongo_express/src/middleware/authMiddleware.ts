@@ -12,7 +12,12 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
       res.status(403).json({ message: "Brak tokenu autoryzacyjnego" });
       return;
     }
-  
+
+    if (blacklistedTokens.has(token)) {
+      res.status(403).json({ message: "Token został unieważniony (wylogowanie)" });
+      return;
+    }
+    
     try {
       const decoded = jwt.verify(token, "secretKey");
       (req as any).user = decoded; // Przechowujemy dane użytkownika w req.user

@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import path from "path";
 import gamesRouter from "./routes/games"; // Nowy router do gier
 import userRouter from "./routes/userRoutes"; // Nowy router do użytkowników
+import reviewsRouter from "./routes/reviewRoutes"; // Nowy router do recenzji
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use((req: Request, res: Response, next) => {
 // Używamy nowych tras gier
 app.use("/games", gamesRouter);  // Obsługuje wszystkie trasy związane z grami
 app.use("/user", userRouter);  // Obsługuje wszystkie trasy związane z użytkownikami
+app.use("/reviews", reviewsRouter);  // Obsługuje wszystkie trasy związane z recenzjami
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
