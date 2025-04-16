@@ -4,6 +4,8 @@ import path from "path";
 import gamesRouter from "./routes/games"; // Nowy router do gier
 import userRouter from "./routes/userRoutes"; // Nowy router do użytkowników
 import reviewsRouter from "./routes/reviewRoutes"; // Nowy router do recenzji
+import adminRoutes from "./routes/adminRoutes";
+import geminiRoutes from "./routes/geminiRoutes";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -29,6 +31,8 @@ app.use((req: Request, res: Response, next) => {
 app.use("/games", gamesRouter);  // Obsługuje wszystkie trasy związane z grami
 app.use("/user", userRouter);  // Obsługuje wszystkie trasy związane z użytkownikami
 app.use("/reviews", reviewsRouter);  // Obsługuje wszystkie trasy związane z recenzjami
+app.use("/admin", adminRoutes); // Obsługuje wszystkie trasy związane z administracją
+app.use("/gemini", geminiRoutes); // Obsługuje wszystkie trasy związane z Gemini
 
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
