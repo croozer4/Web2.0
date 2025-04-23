@@ -63,7 +63,8 @@ export const addGame = async (req: Request, res: Response): Promise<void> => {
       price
     });
     await newGame.save();
-    res.redirect("/games");
+    // res.redirect("/games");
+    res.status(201).json(newGame); // zamiast res.redirect
   } catch (error) {
     console.error("Błąd dodawania gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -84,7 +85,8 @@ export const updateGame = async (req: Request, res: Response): Promise<void> => 
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    res.redirect(`/games/${id}`);
+    // res.redirect(`/games/${id}`);
+    res.json({ message: "Gra zaktualizowana", game }); // przy PUT
   } catch (error) {
     console.error("Błąd aktualizacji gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -100,7 +102,8 @@ export const deleteGame = async (req: Request, res: Response): Promise<void> => 
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    res.redirect("/games");
+    // res.redirect("/games");
+    res.json({ message: "Gra usunięta" }); // przy DELETE
   } catch (error) {
     console.error("Błąd usuwania gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
