@@ -4,11 +4,9 @@ import Review from "../models/Review";
 // Dodanie recenzji
 export const addReview = async (req: Request, res: Response): Promise<void> => {
     console.log("Dodanie recenzji rozpoczete");
-  // const { gameId, content, rating, userId } = req.body;
   const { gameId, content, rating } = req.body;
   const userId = req.user?.userId;
   
-
   try {
     const newReview = new Review({
       userId,

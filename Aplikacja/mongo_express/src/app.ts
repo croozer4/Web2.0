@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import path from "path";
-import gamesRouter from "./routes/games"; // Nowy router do gier
-import userRouter from "./routes/userRoutes"; // Nowy router do użytkowników
-import reviewsRouter from "./routes/reviewRoutes"; // Nowy router do recenzji
+import gamesRouter from "./routes/games";
+import userRouter from "./routes/userRoutes";
+import reviewsRouter from "./routes/reviewRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import geminiRoutes from "./routes/geminiRoutes";
 import dotenv from "dotenv";
@@ -12,8 +12,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/your_database";  // Zmieniamy na zmienną środowiskową
-// console.log("🔍 Używany MONGO_URI:", MONGO_URI);
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/your_database";
+
 mongoose.connect(MONGO_URI)
   .then(() => console.log("✅ Połączono z MongoDB"))
   .catch(err => console.error("❌ Błąd połączenia z MongoDB:", err));
@@ -27,7 +27,6 @@ app.use((req: Request, res: Response, next) => {
   next();
 });
 
-// Używamy nowych tras gier
 app.use("/games", gamesRouter);  // Obsługuje wszystkie trasy związane z grami
 app.use("/user", userRouter);  // Obsługuje wszystkie trasy związane z użytkownikami
 app.use("/reviews", reviewsRouter);  // Obsługuje wszystkie trasy związane z recenzjami

@@ -14,7 +14,6 @@ export const getAllGames = async (req: Request, res: Response): Promise<void> =>
   try {
     const games = await Game.find(query).sort(sortOptions);
     console.log("Pobrane gry:", games);
-    // res.render("games", { games });
     res.json(games);
   } catch (error) {
     console.error("Błąd pobierania gier:", error);
@@ -28,7 +27,7 @@ const getSortOptions = (sort: string, order: string): Record<string, 1 | -1> => 
   switch (sort) {
     case "name": return { name: direction };
     case "genre": return { genre: direction };
-    case "releaseDate": return { releaseDate: direction };
+    case "release_year": return { release_year: direction };
     default: return {};
   }
 };
@@ -42,7 +41,6 @@ export const getGameById = async (req: Request, res: Response): Promise<void> =>
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    // res.render("game", { game });
     res.json(game);
   } catch (error) {
     console.error("Błąd pobierania gry:", error);
@@ -63,8 +61,7 @@ export const addGame = async (req: Request, res: Response): Promise<void> => {
       price
     });
     await newGame.save();
-    // res.redirect("/games");
-    res.status(201).json(newGame); // zamiast res.redirect
+    res.status(201).json(newGame);
   } catch (error) {
     console.error("Błąd dodawania gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -85,8 +82,7 @@ export const updateGame = async (req: Request, res: Response): Promise<void> => 
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    // res.redirect(`/games/${id}`);
-    res.json({ message: "Gra zaktualizowana", game }); // przy PUT
+    res.json({ message: "Gra zaktualizowana", game });
   } catch (error) {
     console.error("Błąd aktualizacji gry:", error);
     res.status(500).json({ message: "Błąd serwera" });
@@ -102,8 +98,7 @@ export const deleteGame = async (req: Request, res: Response): Promise<void> => 
       res.status(404).json({ message: "Gra nie znaleziona" });
       return;
     }
-    // res.redirect("/games");
-    res.json({ message: "Gra usunięta" }); // przy DELETE
+    res.json({ message: "Gra usunięta" });
   } catch (error) {
     console.error("Błąd usuwania gry:", error);
     res.status(500).json({ message: "Błąd serwera" });

@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import nodemailer from "nodemailer";
-import User from "../models/User"; // Importujemy model użytkownika
+import User from "../models/User";
 import { blacklistToken } from "../middleware/authMiddleware";
+
+// Generowanie kodu aktywacji
+const generateActivationCode = (): string => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
 
 // Funkcja do rejestracji użytkownika
 export const registerUser = async (
@@ -12,7 +17,6 @@ export const registerUser = async (
   const { username, email, password } = req.body;
 
   try {
-    // Sprawdzamy, czy użytkownik już istnieje
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       res
@@ -23,16 +27,18 @@ export const registerUser = async (
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const activationCode = generateActivationCode();
+
     const newUser = new User({
       username,
       email,
       password: hashedPassword,
       isActive: false,
+      activationCode,
     });
 
     await newUser.save();
 
-    // Wysyłanie e-maila z linkiem aktywacyjnym
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -41,32 +47,23 @@ export const registerUser = async (
       },
     });
 
-    console.log(process.env.EMAIL_USER);
-    console.log(process.env.EMAIL_PASS);
-
-    const activationLink = `http://localhost:3000/user/activate/${newUser._id}`;
-
     const mailOptions = {
-      from: "your-email@gmail.com",
+      from: process.env.EMAIL_USER,
       to: newUser.email,
-      subject: "Aktywacja konta",
-      text: `Kliknij w link, aby aktywować swoje konto: ${activationLink}`,
+      subject: "Kod aktywacyjny konta",
+      text: `Twój kod aktywacyjny to: ${activationCode}`,
     };
 
-    // Wysyłanie maila
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error);
-        return res
-          .status(500)
-          .json({ message: "Błąd podczas wysyłania wiadomości e-mail." });
-      }
-      res
-        .status(201)
-        .json({
+        console.error("Błąd e-maila:", error);
+        res.status(500).json({ message: "Błąd wysyłki e-maila." });
+      } else {
+        res.status(201).json({
           message:
-            "Użytkownik zarejestrowany. Sprawdź swoją skrzynkę pocztową, aby aktywować konto.",
+            "Użytkownik zarejestrowany. Sprawdź skrzynkę pocztową, aby aktywować konto kodem.",
         });
+      }
     });
   } catch (error) {
     console.error("Błąd rejestracji użytkownika:", error);
@@ -79,18 +76,28 @@ export const activateAccount = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { userId } = req.params;
+  const { email, code } = req.body;
 
   try {
-    // Znajdź użytkownika w bazie po ID
-    const user = await User.findById(userId);
+    const user = await User.findOne({ email });
+
     if (!user) {
       res.status(404).json({ message: "Użytkownik nie znaleziony." });
       return;
     }
 
-    // Aktywuj konto
+    if (user.isActive) {
+      res.status(400).json({ message: "Konto jest już aktywne." });
+      return;
+    }
+
+    if (user.activationCode !== code) {
+      res.status(400).json({ message: "Nieprawidłowy kod aktywacyjny." });
+      return;
+    }
+
     user.isActive = true;
+    user.activationCode = undefined;
     await user.save();
 
     res.status(200).json({ message: "Konto zostało aktywowane!" });
@@ -99,6 +106,7 @@ export const activateAccount = async (
     res.status(500).json({ message: "Błąd serwera" });
   }
 };
+
 
 import jwt from "jsonwebtoken";
 
@@ -130,7 +138,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     // Generujemy token JWT
     const token = jwt.sign(
       { userId: user._id, username: user.username },
-      "secretKey", // Klucz do podpisywania JWT
+      "secretKey",
       { expiresIn: "15m" }
     );
 
@@ -155,6 +163,109 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
     res.status(200).json({ message: "Wylogowano pomyślnie" });
   } catch (error) {
     res.status(500).json({ message: "Błąd serwera podczas wylogowywania" });
+  }
+};
+
+export const changePassword = async (req: Request, res: Response): Promise<void> => {
+  const { newPassword, confirmPassword } = req.body;
+  const userId = (req as any).user?.userId; // zakładamy, że `verifyToken` dołącza `userId` do `req.user`
+
+  if (!userId) {
+    res.status(401).json({ message: "Nieautoryzowany dostęp" });
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    res.status(400).json({ message: "Hasła nie są takie same." });
+    return;
+  }
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      res.status(404).json({ message: "Użytkownik nie znaleziony" });
+      return;
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    user.password = hashed;
+    await user.save();
+
+    res.status(200).json({ message: "Hasło zostało zmienione pomyślnie" });
+  } catch (error) {
+    console.error("Błąd zmiany hasła:", error);
+    res.status(500).json({ message: "Błąd serwera" });
+  }
+};
+
+export const requestPasswordReset = async (req: Request, res: Response): Promise<void> => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(404).json({ message: "Nie znaleziono użytkownika z takim e-mailem" });
+      return;
+    }
+
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+    user.resetCode = resetCode;
+    await user.save();
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Resetowanie hasła",
+      text: `Twój kod do zresetowania hasła to: ${resetCode}`,
+    };
+
+    transporter.sendMail(mailOptions, (error) => {
+      if (error) {
+        console.error("Błąd e-maila:", error);
+        res.status(500).json({ message: "Błąd podczas wysyłania wiadomości" });
+        return;
+      }
+
+      res.status(200).json({ message: "Kod resetujący hasło został wysłany na e-mail" });
+    });
+  } catch (error) {
+    console.error("Błąd przy żądaniu resetu hasła:", error);
+    res.status(500).json({ message: "Błąd serwera" });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+  const { email, resetCode, newPassword, confirmPassword } = req.body;
+
+  if (newPassword !== confirmPassword) {
+    res.status(400).json({ message: "Hasła nie są zgodne." });
+    return;
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user || user.resetCode !== resetCode) {
+      res.status(400).json({ message: "Nieprawidłowy kod resetujący lub użytkownik." });
+      return;
+    }
+
+    const hashed = await bcrypt.hash(newPassword, 10);
+    user.password = hashed;
+    user.resetCode = undefined;
+    await user.save();
+
+    res.status(200).json({ message: "Hasło zostało zresetowane" });
+  } catch (error) {
+    console.error("Błąd resetowania hasła:", error);
+    res.status(500).json({ message: "Błąd serwera" });
   }
 };
 

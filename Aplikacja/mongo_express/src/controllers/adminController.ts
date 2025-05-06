@@ -32,8 +32,6 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
       console.log(process.env.EMAIL_USER);
       console.log(process.env.EMAIL_PASS);
   
-    //   const activationLink = `http://localhost:3000/user/activate/${newUser._id}`;
-  
       const mailOptions = {
         from: "your-email@gmail.com",
         to: newUser.email,
@@ -41,7 +39,6 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
         text: `Witaj na ten adres email utworzono dla Ciebie konto którego hasło to ${password}`,
       };
   
-      // Wysyłanie maila
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.log(error);

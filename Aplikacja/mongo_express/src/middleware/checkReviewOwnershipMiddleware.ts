@@ -3,8 +3,8 @@ import Review from "../models/Review";
 
 // Middleware do sprawdzania, czy recenzja należy do użytkownika
 export const checkReviewOwnership = async (req: Express.Request, res: Response, next: NextFunction): Promise<void> => {
-  const reviewId = req.params.id;  // Teraz 'params' jest dostępne
-  const userId = req.user?.userId;  // userId z JWT
+  const reviewId = req.params.id;
+  const userId = req.user?.userId;
 
   try {
     const review = await Review.findById(reviewId);

@@ -20,8 +20,8 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
     
     try {
       const decoded = jwt.verify(token, "secretKey");
-      (req as any).user = decoded; // Przechowujemy dane użytkownika w req.user
-      next(); // Przechodzimy do następnego middleware lub trasy
+      (req as any).user = decoded;
+      next();
     } catch (error) {
       res.status(403).json({ message: "Token jest nieprawidłowy" });
     }
