@@ -1,8 +1,8 @@
-import { Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import Review from "../models/Review";
 
 // Middleware do sprawdzania, czy recenzja należy do użytkownika
-export const checkReviewOwnership = async (req: Express.Request, res: Response, next: NextFunction): Promise<void> => {
+export const checkReviewOwnership = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const reviewId = req.params.id;
   const userId = req.user?.userId;
 
