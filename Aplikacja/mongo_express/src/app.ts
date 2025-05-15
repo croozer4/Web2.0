@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import cors from "cors";
 import mongoose from "mongoose";
 import path from "path";
 import gamesRouter from "./routes/games";
@@ -10,6 +11,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
+
+
 const PORT = process.env.PORT || 3000;
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/your_database";
@@ -18,6 +21,7 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log("✅ Połączono z MongoDB"))
   .catch(err => console.error("❌ Błąd połączenia z MongoDB:", err));
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
