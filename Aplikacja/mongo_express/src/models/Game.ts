@@ -7,6 +7,7 @@
     platforms: string[];
     rating: number;
     price: number;
+    image_url: string;
   }
 
   const gameSchema = new Schema<IGame>(
@@ -16,7 +17,8 @@
       release_year: { type: Number, required: true },
       platforms: { type: [String], required: true },
       rating: { type: Number, required: true },
-      price: { type: Number, required: true }
+      price: { type: Number, required: true },
+      image_url: {type: String, required: true }
     },
     { timestamps: true }
   );
