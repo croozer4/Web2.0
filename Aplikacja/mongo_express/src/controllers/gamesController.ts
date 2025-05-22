@@ -50,15 +50,17 @@ export const getGameById = async (req: Request, res: Response): Promise<void> =>
 
 // POST /games – Dodaj nową grę
 export const addGame = async (req: Request, res: Response): Promise<void> => {
-  const { title, developer, release_year, platforms, rating, price } = req.body;
+  const { title, developer, release_year, platforms, genre, rating, price, image_url } = req.body;
   try {
     const newGame = new Game({
       title,
       developer,
       release_year,
       platforms,
+      genre,
       rating,
-      price
+      price,
+      image_url,
     });
     await newGame.save();
     res.status(201).json(newGame);

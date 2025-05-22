@@ -5,6 +5,7 @@
     developer: string;
     release_year: number;
     platforms: string[];
+    genre: string[];
     rating: number;
     price: number;
     image_url: string;
@@ -16,6 +17,7 @@
       developer: { type: String, required: true },
       release_year: { type: Number, required: true },
       platforms: { type: [String], required: true },
+      genre: { type: [String], required: true},
       rating: { type: Number, required: true },
       price: { type: Number, required: true },
       image_url: {type: String, required: true }
