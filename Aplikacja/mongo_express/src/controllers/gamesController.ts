@@ -25,10 +25,11 @@ export const getAllGames = async (req: Request, res: Response): Promise<void> =>
 const getSortOptions = (sort: string, order: string): Record<string, 1 | -1> => {
   const direction = order === "desc" ? -1 : 1;
   switch (sort) {
-    case "name": return { name: direction };
-    case "genre": return { genre: direction };
+    case "title": return { title: direction }; // Zmienione z "name" na "title"
+    case "developer": return { developer: direction }; // Dodane
+    case "rating": return { rating: direction };     // Dodane
     case "release_year": return { release_year: direction };
-    default: return {};
+    default: return { title: 1 }; // Domyślne sortowanie po tytule rosnąco, jeśli brak pasującego sortowania
   }
 };
 
