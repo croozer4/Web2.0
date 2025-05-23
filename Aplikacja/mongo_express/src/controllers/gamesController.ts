@@ -73,11 +73,11 @@ export const addGame = async (req: Request, res: Response): Promise<void> => {
 // PUT /games/{id} – Aktualizuj dane gry
 export const updateGame = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
-  const { title, developer, release_year, platforms, rating, price } = req.body;
+  const { title, developer, release_year, platforms, genre, rating, price, image_url} = req.body;
   try {
     const game = await Game.findByIdAndUpdate(
       id,
-      { title, developer, release_year, platforms, rating, price },
+      { title, developer, release_year, platforms, genre, rating, price, image_url },
       { new: true }
     );
     if (!game) {
