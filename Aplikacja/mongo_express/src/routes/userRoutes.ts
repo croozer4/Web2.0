@@ -6,7 +6,7 @@ const router = Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.get("/activate", activateAccount);
+router.post("/activate", activateAccount);
 router.post("/logout", verifyToken, logoutUser);
 router.post("/change-password", verifyToken, changePassword);
 router.post("/request-password-reset", requestPasswordReset);

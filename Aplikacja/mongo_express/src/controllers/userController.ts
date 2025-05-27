@@ -50,8 +50,95 @@ export const registerUser = async (
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: newUser.email,
-      subject: "Kod aktywacyjny konta",
-      text: `Twój kod aktywacyjny to: ${activationCode}`,
+      subject: "Witamy w RatePlay! Aktywacja konta",
+      html: `
+    <!DOCTYPE html>
+    <html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Aktywacja Konta RatePlay</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333333;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #ffffff;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                text-align: center;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #eeeeee;
+            }
+            .header h1 {
+                color: #333333;
+                font-size: 24px;
+                margin: 0;
+            }
+            .content {
+                padding: 20px 0;
+            }
+            .content p {
+                margin-bottom: 15px;
+            }
+            .activation-code {
+                display: block;
+                width: fit-content;
+                margin: 20px auto;
+                padding: 15px 25px;
+                background-color: #4dbef7; /* Kolor przycisku z DaisyUI primary */
+                color: #ffffff;
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center;
+                border-radius: 5px;
+                text-decoration: none;
+                letter-spacing: 2px;
+            }
+            .footer {
+                text-align: center;
+                padding-top: 20px;
+                border-top: 1px solid #eeeeee;
+                font-size: 14px;
+                color: #777777;
+            }
+            .logo {
+                max-width: 150px; /* Dostosuj rozmiar, jeśli masz logo */
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Witamy w RatePlay!</h1>
+            </div>
+            <div class="content">
+                <p>Cześć <b>${newUser.username}</b>,</p>
+                <p>Dziękujemy za rejestrację konta w serwisie RatePlay! Jesteśmy podekscytowani, że dołączasz do naszej społeczności graczy.</p>
+                <p>Aby dokończyć proces rejestracji i aktywować swoje konto, prosimy o wpisanie poniższego kodu aktywacyjnego na naszej stronie:</p>
+                <span class="activation-code">${activationCode}</span>
+                <p>Ten kod jest niezbędny do pełnego dostępu do wszystkich funkcji RatePlay.</p>
+                <p>Jeśli nie rejestrowałeś się w RatePlay, prosimy zignoruj tę wiadomość.</p>
+            </div>
+            <div class="footer">
+                <p>Dziękujemy i pozdrawiamy,</p>
+                <p>Zespół RatePlay</p>
+            </div>
+        </div>
+    </body>
+    </html>
+  `,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -107,7 +194,6 @@ export const activateAccount = async (
   }
 };
 
-
 import jwt from "jsonwebtoken";
 
 // Funkcja logowania i generowania tokenu
@@ -149,8 +235,10 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-
-export const logoutUser = async (req: Request, res: Response): Promise<void> => {
+export const logoutUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const token = req.headers.authorization?.split(" ")[1];
 
@@ -166,7 +254,10 @@ export const logoutUser = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-export const changePassword = async (req: Request, res: Response): Promise<void> => {
+export const changePassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { newPassword, confirmPassword } = req.body;
   const userId = (req as any).user?.userId; // zakładamy, że `verifyToken` dołącza `userId` do `req.user`
 
@@ -198,13 +289,18 @@ export const changePassword = async (req: Request, res: Response): Promise<void>
   }
 };
 
-export const requestPasswordReset = async (req: Request, res: Response): Promise<void> => {
+export const requestPasswordReset = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { email } = req.body;
 
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      res.status(404).json({ message: "Nie znaleziono użytkownika z takim e-mailem" });
+      res
+        .status(404)
+        .json({ message: "Nie znaleziono użytkownika z takim e-mailem" });
       return;
     }
 
@@ -234,7 +330,9 @@ export const requestPasswordReset = async (req: Request, res: Response): Promise
         return;
       }
 
-      res.status(200).json({ message: "Kod resetujący hasło został wysłany na e-mail" });
+      res
+        .status(200)
+        .json({ message: "Kod resetujący hasło został wysłany na e-mail" });
     });
   } catch (error) {
     console.error("Błąd przy żądaniu resetu hasła:", error);
@@ -242,7 +340,10 @@ export const requestPasswordReset = async (req: Request, res: Response): Promise
   }
 };
 
-export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+export const resetPassword = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { email, resetCode, newPassword, confirmPassword } = req.body;
 
   if (newPassword !== confirmPassword) {
@@ -253,7 +354,9 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
   try {
     const user = await User.findOne({ email });
     if (!user || user.resetCode !== resetCode) {
-      res.status(400).json({ message: "Nieprawidłowy kod resetujący lub użytkownik." });
+      res
+        .status(400)
+        .json({ message: "Nieprawidłowy kod resetujący lub użytkownik." });
       return;
     }
 
@@ -268,6 +371,3 @@ export const resetPassword = async (req: Request, res: Response): Promise<void> 
     res.status(500).json({ message: "Błąd serwera" });
   }
 };
-
-
-
