@@ -228,7 +228,12 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       { expiresIn: "15m" }
     );
 
-    res.status(200).json({ message: "Zalogowano pomyślnie", token });
+    const currentUser = {
+      id: user._id,
+      username: user.username,
+    }
+
+    res.status(200).json({ message: "Zalogowano pomyślnie", token, currentUser });
   } catch (error) {
     console.error("Błąd logowania:", error);
     res.status(500).json({ message: "Błąd serwera" });
