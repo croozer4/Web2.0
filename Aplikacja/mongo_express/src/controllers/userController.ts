@@ -321,12 +321,102 @@ export const requestPasswordReset = async (
       },
     });
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: "Resetowanie hasła",
-      text: `Twój kod do zresetowania hasła to: ${resetCode}`,
-    };
+const mailOptions = {
+  from: process.env.EMAIL_USER,
+  to: user.email, // Zakładam, że masz obiekt 'user' z adresem e-mail
+  subject: "RatePlay: Resetowanie hasła do konta",
+  html: `
+    <!DOCTYPE html>
+    <html lang="pl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Resetowanie Hasła RatePlay</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333333;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #ffffff;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .header {
+                text-align: center;
+                padding-bottom: 20px;
+                border-bottom: 1px solid #eeeeee;
+            }
+            .header h1 {
+                color: #333333;
+                font-size: 24px;
+                margin: 0;
+            }
+            .content {
+                padding: 20px 0;
+            }
+            .content p {
+                margin-bottom: 15px;
+            }
+            .reset-code {
+                display: block;
+                width: fit-content;
+                margin: 20px auto;
+                padding: 15px 25px;
+                background-color: #da64a4; /* Zmieniony kolor na pasujący do "error" Toastify lub inny kontrastowy */
+                color: #ffffff;
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center;
+                border-radius: 5px;
+                text-decoration: none;
+                letter-spacing: 2px;
+            }
+            .footer {
+                text-align: center;
+                padding-top: 20px;
+                border-top: 1px solid #eeeeee;
+                font-size: 14px;
+                color: #777777;
+            }
+            .note {
+                font-size: 12px;
+                color: #999999;
+                text-align: center;
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Resetowanie Hasła RatePlay</h1>
+            </div>
+            <div class="content">
+                <p>Cześć ${user.username ? '<b>' + user.username + '</b>' : ''},</p>
+                <p>Otrzymaliśmy prośbę o zresetowanie hasła dla Twojego konta RatePlay.</p>
+                <p>Aby kontynuować proces resetowania hasła, prosimy o wpisanie poniższego kodu w odpowiednim polu na naszej stronie:</p>
+                <span class="reset-code">${resetCode}</span>
+                <p>Ten kod jest ważny przez ograniczony czas. Jeśli nie zresetujesz hasła w ciągu kilku minut, będziesz musiał poprosić o nowy kod.</p>
+                <p>Jeśli to nie Ty prosiłeś o zresetowanie hasła, prosimy zignoruj tę wiadomość i nie udostępniaj nikomu tego kodu.</p>
+            </div>
+            <div class="footer">
+                <p>Dziękujemy i pozdrawiamy,</p>
+                <p>Zespół RatePlay</p>
+            </div>
+            <p class="note">To jest wiadomość automatyczna. Prosimy nie odpowiadać na ten e-mail.</p>
+        </div>
+    </body>
+    </html>
+  `,
+};
 
     transporter.sendMail(mailOptions, (error) => {
       if (error) {
