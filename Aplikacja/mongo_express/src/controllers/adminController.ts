@@ -106,3 +106,18 @@ export const toggleActive = async (req: Request, res: Response): Promise<void> =
       message: `Konto zostało ${user.isActive ? "aktywowane" : "zablokowane"}`,
     });
 };
+
+// NOWA FUNKCJA: Pobieranie wszystkich użytkowników (tylko dla admina)
+export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+  try {
+    // Pobierz wszystkich użytkowników z bazy danych
+    // Możesz wybrać, które pola chcesz zwrócić, aby uniknąć wysyłania hashy haseł itp.
+    const users = await User.find({}).select('-password -activationCode -resetCode'); // Wyklucza wrażliwe dane
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Błąd podczas pobierania użytkowników:", error);
+    res.status(500).json({ message: "Błąd serwera podczas pobierania użytkowników." });
+  }
+};
+

@@ -223,14 +223,15 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 
     // Generujemy token JWT
     const token = jwt.sign(
-      { userId: user._id, username: user.username },
+      { userId: user._id, username: user.username, isAdmin: user.isAdmin },
       "secretKey",
-      { expiresIn: "15m" }
+      { expiresIn: "1m" }
     );
 
     const currentUser = {
       id: user._id,
       username: user.username,
+      isAdmin: user.isAdmin,
     }
 
     res.status(200).json({ message: "Zalogowano pomyślnie", token, currentUser });
