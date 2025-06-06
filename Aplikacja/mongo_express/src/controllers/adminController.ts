@@ -14,47 +14,145 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     username,
     email,
     password: hashedPassword,
-    isActive: true,
+    isActive: true, // Zakładamy, że konto jest aktywne od razu po utworzeniu przez admina
     isAdmin: false,
   });
 
-  await newUser.save();
+  try { // Dodaj try-catch, żeby obsłużyć błędy zapisu użytkownika do bazy
+    await newUser.save();
 
-  // Wysyłanie e-maila z linkiem aktywacyjnym
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASS,
-        },
-      });
-  
-      console.log(process.env.EMAIL_USER);
-      console.log(process.env.EMAIL_PASS);
-  
-      const mailOptions = {
-        from: "your-email@gmail.com",
-        to: newUser.email,
-        subject: "Utworzenie konta",
-        text: `Witaj na ten adres email utworzono dla Ciebie konto którego hasło to ${password}`,
-      };
-  
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log(error);
-          return res
-            .status(500)
-            .json({ message: "Błąd podczas wysyłania wiadomości e-mail." });
-        }
-        res
-          .status(201)
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    console.log(process.env.EMAIL_USER);
+    console.log(process.env.EMAIL_PASS);
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER, // Użyj zmiennej środowiskowej
+      to: newUser.email,
+      subject: "Witamy w naszym serwisie! Twoje konto zostało utworzone",
+      html: `
+        <!DOCTYPE html>
+        <html lang="pl">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Twoje Konto Zostało Utworzone</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333333;
+                    background-color: #f4f4f4;
+                    margin: 0;
+                    padding: 0;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    background-color: #ffffff;
+                    padding: 30px;
+                    border-radius: 8px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                    text-align: center;
+                    padding-bottom: 20px;
+                    border-bottom: 1px solid #eeeeee;
+                }
+                .header h1 {
+                    color: #333333;
+                    font-size: 24px;
+                    margin: 0;
+                }
+                .content {
+                    padding: 20px 0;
+                }
+                .content p {
+                    margin-bottom: 15px;
+                }
+                .generated-password {
+                    display: block;
+                    width: fit-content;
+                    margin: 20px auto;
+                    padding: 15px 25px;
+                    background-color: #4dbef7; /* Kolor przycisku z DaisyUI primary */
+                    color: #ffffff;
+                    font-size: 24px;
+                    font-weight: bold;
+                    text-align: center;
+                    border-radius: 5px;
+                    text-decoration: none;
+                    letter-spacing: 2px;
+                }
+                .footer {
+                    text-align: center;
+                    padding-top: 20px;
+                    border-top: 1px solid #eeeeee;
+                    font-size: 14px;
+                    color: #777777;
+                }
+                .logo {
+                    max-width: 150px; /* Dostosuj rozmiar, jeśli masz logo */
+                    margin-bottom: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Witaj! Twoje konto zostało utworzone.</h1>
+                </div>
+                <div class="content">
+                    <p>Cześć <b>${newUser.username}</b>,</p>
+                    <p>Twoje konto w naszym serwisie zostało pomyślnie utworzone! Poniżej znajdziesz swoje tymczasowe hasło:</p>
+                    <span class="generated-password">${password}</span>
+                    <p>Ze względów bezpieczeństwa, zalecamy zmianę tego hasła po pierwszym logowaniu.</p>
+                    <p>Aby się zalogować, użyj swojego adresu e-mail: <b>${newUser.email}</b> oraz powyższego hasła.</p>
+                    <p>Jeśli masz jakiekolwiek pytania, skontaktuj się z nami.</p>
+                    <p>Jeśli nie tworzyłeś tego konta, prosimy zignoruj tę wiadomość.</p>
+                </div>
+                <div class="footer">
+                    <p>Dziękujemy i pozdrawiamy,</p>
+                    <p>Zespół RatePlay</p>
+                </div>
+            </div>
+        </body>
+        </html>
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        // Jeśli jest błąd wysyłki maila, to nadal zwracamy sukces utworzenia użytkownika
+        // ale z informacją o problemie z mailem
+        return res
+          .status(201) // Nadal 201 Created
           .json({
-            message:
-              "Użytkownik zarejestrowany. Sprawdź swoją skrzynkę pocztową, aby aktywować konto.",
+            message: "Użytkownik utworzony, ale wystąpił błąd podczas wysyłania e-maila z hasłem.",
+            user: newUser, // Zwracamy utworzonego użytkownika
+            generatedPassword: password // Możesz zwrócić hasło tylko na dev dla testów
           });
-      });
-
-  res.status(201).json({ message: "Użytkownik utworzony", password }); // możesz też zwrócić hasło tymczasowe
+      }
+      res
+        .status(201)
+        .json({
+          message: "Użytkownik utworzony. Hasło zostało wysłane na podany adres e-mail.",
+          user: newUser, // Zwracamy utworzonego użytkownika
+          generatedPassword: password // Możesz zwrócić hasło tylko na dev dla testów
+        });
+    });
+  } catch (error) {
+    // Obsługa błędu zapisu użytkownika do bazy danych
+    console.error("Błąd podczas tworzenia użytkownika:", error);
+    res.status(500).json({ message: "Błąd serwera podczas tworzenia użytkownika." });
+  }
 };
 
 // 2. Usuwanie użytkownika

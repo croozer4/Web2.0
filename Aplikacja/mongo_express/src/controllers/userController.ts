@@ -225,7 +225,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     const token = jwt.sign(
       { userId: user._id, username: user.username, isAdmin: user.isAdmin },
       "secretKey",
-      { expiresIn: "1m" }
+      { expiresIn: "15m" }
     );
 
     const currentUser = {
